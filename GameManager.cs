@@ -6,53 +6,51 @@ using System.Collections;
 using TMPro;
 using UnityEngine.Audio;
 
+// TODO: Spawn system is sad. Pls fix.
+// TODO: Make a UI so things actually happen.
+
 public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
-    // UX Giigleshittery
-    [SerializeField] private TextMeshProUGUI scoreText, livesText;
+    // UX Silliness
+    [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
-    [SerializeField] private AudioSource gameOverAudioSource;
-    [SerializeField] private AudioClip gameOverAudioClip;
 
-    // Le Assets
+    // Le Things
     [SerializeField] private GameObject toob;
     private PlayerController playerControllerScript;
 
-    // Le values
-    private int score, lives;
-    private float baseSpawnRate, spawnRate;
+    // Le Values
+	[SerializeField] private float baseSpawnRate;
+    private int score;
+    private float spawnRate;
     public bool isGameActive, isGamePaused;
 
+	
     private void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-        StartCoroutine(SpawnTarget());
-        baseSpawnRate = 1;
+        StartGame(1f)
     }
 
     // This makes the game actually like happen
-    public void StartGame()
+    public void StartGame(float difficulty)
     {
         // Thy Game Commenceth
         isGameActive = true;
         isGamePaused = false;
         score = 0;
-        lives = 3;
-        spawnRate = baseSpawnRate / 1;
-        // If 666 is the number of evil
-        // Then 25.806975801 is the root of all evil
+        spawnRate = baseSpawnRate / difficulty;
+
         StartCoroutine(SpawnTarget());
-        UpdateScore(0);
-        livesText.text = "LIVES: " + lives;
+        
+		UpdateScore(0);
+
         titleScreen.SetActive(false);
         pauseScreen.SetActive(false);
     }
     void Update() 
     {
-        // Makes Sure the game FUCKING DIES when it should
-        if(score < 0) { GameOver();}
-
         // Calls Pause Handler (i.e: The thing that handles pausing)
         if (Input.GetKeyDown(KeyCode.Escape) && isGameActive) { PauseHandler(); }
     }
@@ -60,30 +58,33 @@ public class GameManager : MonoBehaviour
     //Gaym Cuntrul :3
     IEnumerator SpawnTarget()
     {
-        yield return new WaitForSeconds(spawnRate);
-        float spawnPosY = Random.Range(-8, -1);
-
-        // HACK: This sucks, but it almost kind of works.
-        Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
-        Vector3 spawnLocation2 = new Vector2(10, spawnPosY + 10);
-
+        
         if (!playerControllerScript.gameOver)
         {
+			yield return new WaitForSeconds(spawnRate);
+        	float spawnPosY = Random.Range(-8, -1);
+			
+			// No, I don't know why Vector3 doesn't freak out when it's set to equal a Vector2.
+			// All I know is that it works, and therefore will not be touched until I feel like it.
+			Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
+        	Vector3 spawnLocation2 = new Vector2(10, spawnPosY + 10);
+
             Instantiate(toob, spawnLocation1, toob.transform.rotation);
             Instantiate(toob, spawnLocation2, Quaternion.Euler(0f, 180f, 180f));
         }
     }
 
-    //DO NOT FUCKING TOUCH
+    // Do not touch yet
     public void RestartGame()
     {
-        // Westawts The Game Wen You Cwick The Cute Button :3
+        // TODO: Button doesn't exist yet.
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    // DONT FUCKING TOUCH
+	
+    // Leave it for now
     public void PauseHandler()
     {
-        // No idea why this works, but to hell with it we ball
+        // Hopefully this works like it did last time.
 	    isGamePaused = !isGamePaused;
 	    Time.timeScale = isGamePaused ? 0f : 1f;
         if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
@@ -93,12 +94,11 @@ public class GameManager : MonoBehaviour
    // FIXME: This isn't how we want score counted. Change this to score increasing every second or something.
     public void UpdateScore(int scoreToAdd)
     {
-        // Makes the score go up (assuming you don't actually suck)
         score += scoreToAdd;
         scoreText.text = "SCORE: " + score;
     } 
 
-    // DO NOT FUCKING TOUCH OR YOU DIE
+    // Leave it
     public void GameOver()
     {
         // Literally murders the game in cold blood 
@@ -111,9 +111,7 @@ public class GameManager : MonoBehaviour
         gameOverAudioSource.PlayOneShot(gameOverAudioClip, 1f);
     }
 
-    // DO. NOT. FUCKING. TOUCH
-    public void CloseGame()
-    {
-        Application.Quit();
-    }
+    // Exactly what it says on the tin.
+    public void CloseGame() {Application.Quit();} // DO. NOT. TOUCH.
 }
+
