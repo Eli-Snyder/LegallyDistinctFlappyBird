@@ -6,7 +6,6 @@ using System.Collections;
 using TMPro;
 using UnityEngine.Audio; // Probably don't need this one.
 
-// TODO: Spawn system is sad. Pls fix.
 // TODO: Make a UI so things actually happen.
 
 public class GameManager : MonoBehaviour
@@ -84,3 +83,4 @@ public class GameManager : MonoBehaviour
     public void CloseGame()
 	{ Application.Quit(); }
 }
+
