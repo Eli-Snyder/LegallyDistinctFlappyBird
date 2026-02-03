@@ -6,23 +6,20 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private GameObject toob; 
     [SerializeField] private float baseSpawnRate;
+	[SerializeField] private GameManager gameManager;
     private float spawnRate;
 
-    private PlayerController playerControllerScript;
-
-
+	
     void Start()
     {
         spawnRate = baseSpawnRate;
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-
         StartCoroutine(SpawnTarget()); // TODO: Will add activation trigger later
     }
 
 
     IEnumerator SpawnTarget()
     {
-        if (!playerControllerScript.gameOver)
+        if (gameManager.isGameActive)
         {
 			yield return new WaitForSeconds(spawnRate);
         	float spawnPosY = Random.Range(-8, -1);
