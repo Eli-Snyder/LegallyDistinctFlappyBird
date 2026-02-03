@@ -3,29 +3,17 @@
 public class MoveLeft : MonoBehaviour
 {
     [SerializeField] private float speed;
-    private PlayerController playerControllerScript;
+    [SerializeField private GameManager gameManager;
     private float leftBound = -10;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-    }
-
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // If game is not over, move to the left
-        if (playerControllerScript.gameOver == false)
-        {
-            transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
-        }
+        if (gameManager.isGameActive)
+        { transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World); }
 
         // If object goes off screen that is NOT the background, destroy it
         if (transform.position.x < leftBound && !gameObject.CompareTag("Background"))
-        {
-            Destroy(gameObject);
-        }
-
+        { Destroy(gameObject); }
     }
 }
