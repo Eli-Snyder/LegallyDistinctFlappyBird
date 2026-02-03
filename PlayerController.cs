@@ -29,12 +29,10 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnCollisionEnter(Collision other)
-    {
-        // if player collides with the opps, set gameOver to true
+    { 
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            gameOver = true;
-            Debug.Log("Game Over!");
+            gameOver = true; // This needs to change to trigger the GameOver() method in GameManager.cs
         } 
     }
 
