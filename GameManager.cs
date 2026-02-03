@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Collections;
 using TMPro;
-using UnityEngine.Audio; // Probably don't need this one.
 
 // TODO: Make a UI so things actually happen.
 
@@ -16,11 +15,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
 
     // Le Things
-    [SerializeField] private GameObject spawnManager;
+    [SerializeField] private SpawnManager spawnManager;
 	
     // Le Values
 	public bool isGameActive, isGamePaused;
 	private int score;
+
 
     // This makes the game actually like happen
     public void StartGame(float difficulty)
@@ -29,12 +29,13 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         isGamePaused = false;
         score = 0;
-        spawnRate = baseSpawnRate / difficulty; // NOTE: Difficulty handling subject to change
+        spawnRate = baseSpawnRate; // NOTE: Difficulty handling subject to change
 		
 		UpdateScore(0);
-		
+
         if (titleScreen != null) { titleScreen.SetActive(false); }
         if (pauseScreen != null) { pauseScreen.SetActive(false); }
+		spawnManager.SpawnTarget();
     }
 	
     void Update() 
@@ -79,8 +80,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 	}
 	
-	// DO. NOT. TOUCH.
+	// DO. NOT. TOUCH. THIS.
     public void CloseGame()
 	{ Application.Quit(); }
 }
+
 
