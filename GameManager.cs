@@ -40,14 +40,16 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         isGamePaused = false;
         score = 0;
-        spawnRate = baseSpawnRate / difficulty;
+        spawnRate = baseSpawnRate / difficulty; // NOTE: Difficulty handling subject to change
 
         StartCoroutine(SpawnTarget());
         
 		UpdateScore(0);
-
-        titleScreen.SetActive(false);
-        pauseScreen.SetActive(false);
+		
+		// These two lines might be breaking stuff. Don't delete them though.
+		//
+        //titleScreen.SetActive(false);
+        //pauseScreen.SetActive(false);
     }
     void Update() 
     {
@@ -87,15 +89,17 @@ public class GameManager : MonoBehaviour
         // Hopefully this works like it did last time.
 	    isGamePaused = !isGamePaused;
 	    Time.timeScale = isGamePaused ? 0f : 1f;
-        if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
+        // if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
     }
  
 
    // FIXME: This isn't how we want score counted. Change this to score increasing every second or something.
     public void UpdateScore(int scoreToAdd)
     {
-        score += scoreToAdd;
-        scoreText.text = "SCORE: " + score;
+		// Code Commented out for now
+		//
+        //score += scoreToAdd;
+        //scoreText.text = "SCORE: " + score;
     } 
 
     // Leave it
@@ -114,4 +118,5 @@ public class GameManager : MonoBehaviour
     // Exactly what it says on the tin.
     public void CloseGame() {Application.Quit();} // DO. NOT. TOUCH.
 }
+
 
