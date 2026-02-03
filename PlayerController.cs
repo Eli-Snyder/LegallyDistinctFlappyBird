@@ -17,22 +17,16 @@ public class PlayerController : MonoBehaviour
         playerRb.AddForce(Vector3.up * 5, ForceMode.Impulse);
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        // While space is pressed and player is low enough, float up
         if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
-        {
-            playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
-        }
+        { playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse); }
     }
 
     private void OnCollisionEnter(Collision other)
     { 
         if (other.gameObject.CompareTag("Obstacle"))
-        {
-            gameManager.GameOver();
-        } 
+        { gameManager.GameOver(); } 
     }
 
 }
