@@ -1,36 +1,39 @@
 ﻿using UnityEngine;
 
+// TODO: Rewrite spawn manager to just generally suck less.
+
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject toob;
-    private float spawnDelay = 3;
-    private float spawnInterval = 1.5f;
+    [SerializeField] private GameObject toob; 
+    [SerializeField] private float baseSpawnRate;
+    private float spawnRate;
 
     private PlayerController playerControllerScript;
 
 
     void Start()
     {
-        // HACK: Horrible no good very bad hack of hacks
-        // HOWEVER: I guess it works :(
-        InvokeRepeating("SpawnObjects", spawnDelay, spawnInterval);
+        spawnRate = baseSpawnRate;
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
+
+        StartCoroutine(SpawnTarget()); // TODO: Will add activation trigger later
     }
 
 
-    void SpawnObjects ()
+    IEnumerator SpawnTarget()
     {
-        float spawnPosY = Random.Range(-8, -1);
-
-        // HACK: This sucks, but it almost kind of works.
-        Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
-        Vector3 spawnLocation2 = new Vector2(10, spawnPosY+10);
-
         if (!playerControllerScript.gameOver)
         {
-            Instantiate(toob, spawnLocation1, toob.transform.rotation);
-            Instantiate(toob, spawnLocation2 , Quaternion.Euler(0f, 180f, 180f));
-        }
+			yield return new WaitForSeconds(spawnRate);
+        	float spawnPosY = Random.Range(-8, -1);
+			
+			// No, I don't know why Vector3 doesn't freak out when it's set to equal a Vector2.
+			// All I know is that it works, and therefore will not be touched until I feel like it.
+			Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
+        	Vector3 spawnLocation2 = new Vector2(10, spawnPosY + 10);
 
+            Instantiate(toob, spawnLocation1, toob.transform.rotation);
+            Instantiate(toob, spawnLocation2, Quaternion.Euler(0f, 180f, 180f));
+        }
     }
 }
