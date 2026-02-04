@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public bool gameOver;
-
     [SerializeField] private float gravityModifier = 1.5f, floatForce = 5;
+    [SerializeField] private GameManager gameManager;
     private Rigidbody playerRb;
 
 
@@ -19,20 +18,23 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // While space is pressed and player is low enough, float up
-        if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
+        if (Input.GetKeyDown(KeyCode.Space) && gameManager.isGameActive)
         {
             playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
+            Debug.Log("Boing");
         }
     }
 
     private void OnCollisionEnter(Collision other)
-    { 
+    {
+        // if player collides with the opps, set gameOver to true
         if (other.gameObject.CompareTag("Obstacle"))
         {
-            gameOver = true; // This needs to change to trigger the GameOver() method in GameManager.cs
+            gameManager.GameOver();
+            Debug.Log("Rip broski");
         } 
     }
 

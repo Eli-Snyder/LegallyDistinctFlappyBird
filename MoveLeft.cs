@@ -1,22 +1,19 @@
-﻿using UnityEngine;
+using UnityEngine;
+
 
 public class MoveLeft : MonoBehaviour
 {
     [SerializeField] private float speed;
-    private PlayerController playerControllerScript;
+    public GameManager gameManager;
+
     private float leftBound = -10;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
-    }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // If game is not over, move to the left
-        if (playerControllerScript.gameOver == false)
+        if (gameManager.isGameActive)
         {
             transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
         }
