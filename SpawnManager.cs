@@ -1,15 +1,16 @@
-﻿using UnityEngine;
-
+using UnityEngine;
+using System.Collections;
 // TODO: Rewrite spawn manager to just generally suck less.
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] private GameObject toob; 
+    [SerializeField] private GameObject toob;
     [SerializeField] private float baseSpawnRate;
-	[SerializeField] private GameManager gameManager;
-    private float spawnRate;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private float spawnRate;
 
-	
+    
+
     void Start()
     {
         spawnRate = baseSpawnRate;
@@ -19,18 +20,21 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnTarget()
     {
-        if (gameManager.isGameActive)
+        while (gameManager.isGameActive)
         {
-			yield return new WaitForSeconds(spawnRate);
-        	float spawnPosY = Random.Range(-8, -1);
-			
-			// No, I don't know why Vector3 doesn't freak out when it's set to equal a Vector2.
-			// All I know is that it works, and therefore will not be touched until I feel like it.
-			Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
-        	Vector3 spawnLocation2 = new Vector2(10, spawnPosY + 10);
+            spawnRate += 0.5f;
+            yield return new WaitForSeconds(spawnRate);
+            float spawnPosY = Random.Range(-8, -1);
+
+            // No, I don't know why Vector3 doesn't freak out when it's set to equal a Vector2.
+            // All I know is that it works, and therefore will not be touched until I feel like it.
+            Vector3 spawnLocation1 = new Vector2(10, spawnPosY);
+            Vector3 spawnLocation2 = new Vector2(10, spawnPosY + 10);
 
             Instantiate(toob, spawnLocation1, toob.transform.rotation);
             Instantiate(toob, spawnLocation2, Quaternion.Euler(0f, 180f, 180f));
+
+            
         }
     }
 }
