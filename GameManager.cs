@@ -11,10 +11,11 @@ public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
     // UI Silliness
-	// [SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
+	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     // Le Things
+	public static GameManger Instance;
     [SerializeField] private SpawnManager spawnManager;
 	
     // Le Values
@@ -22,7 +23,16 @@ public class GameManager : MonoBehaviour
 	private int score;
 
 
-    // This makes the game actually like happen
+	private void Awake()
+	{
+		// Creates an instance of GameManager if one does not already exist.
+		if (Instance == null)
+		{ Instance = this; }
+		else
+		{ Destroy(gameObject); }
+	}
+    
+	// This makes the game actually like happen
     public void StartGame(float difficulty)
     {
         // Thy Game Commenceth
@@ -84,5 +94,6 @@ public class GameManager : MonoBehaviour
     public void CloseGame()
 	{ Application.Quit(); }
 }
+
 
 
