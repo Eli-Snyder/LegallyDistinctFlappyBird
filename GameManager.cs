@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         if (titleScreen != null) { titleScreen.SetActive(true); }
         if (scoreText != null) { persistentUI.SetActive(false); }
 
-        StartGame();
+        StartGame(); // This will be replaced with a START button later. 
 	}
     
 	// This makes the game actually like happen
@@ -45,13 +45,12 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
         score = 0;
 
-		
 		StartCoroutine(ScoreCounter());
+		spawnManager.StartSpawner();
 
         if (titleScreen != null) { titleScreen.SetActive(false); }
         if (pauseScreen != null) { pauseScreen.SetActive(false); }
         if (scoreText != null) { persistentUI.SetActive(true); }
-		spawnManager.StartSpawner();
     }
 	
     void Update() 
@@ -76,13 +75,12 @@ public class GameManager : MonoBehaviour
         if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
     }
 
-
-    // FIXME: This isn't how we want score counted. Probably needs to be entirely rewritten.
     IEnumerator ScoreCounter()
     {
         while (isGameActive)
         {
             yield return new WaitForSeconds(1);
+			
             if (isGameActive) 
             {
                 scoreText.text = "SCORE: " + score;
@@ -91,7 +89,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Leave it
+    
     public void GameOver()
     {
         if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
@@ -101,10 +99,10 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
 	}
 	
-	// DO. NOT. TOUCH. THIS.
     public void CloseGame()
 	{ Application.Quit(); }
 }
+
 
 
 
