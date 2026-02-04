@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
     // UI Silliness
-	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
+	// [SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     // Le Things
@@ -29,13 +29,13 @@ public class GameManager : MonoBehaviour
         isGameActive = true;
         isGamePaused = false;
         score = 0;
-        spawnRate = baseSpawnRate; // NOTE: Difficulty handling subject to change
+
 		
 		UpdateScore(0);
 
-        if (titleScreen != null) { titleScreen.SetActive(false); }
-        if (pauseScreen != null) { pauseScreen.SetActive(false); }
-		spawnManager.SpawnTarget();
+        //if (titleScreen != null) { titleScreen.SetActive(false); }
+        //if (pauseScreen != null) { pauseScreen.SetActive(false); }
+		// spawnManager.SpawnTarget();
     }
 	
     void Update() 
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 	    isGamePaused = !isGamePaused;
 	    Time.timeScale = isGamePaused ? 0f : 1f;
 		
-        if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
+        // if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
     }
  
 
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     // Leave it
     public void GameOver()
     {
-        if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
+        //if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
         
         isGameActive = false;
         isGamePaused = false;
