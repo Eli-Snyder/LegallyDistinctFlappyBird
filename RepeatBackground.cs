@@ -16,4 +16,8 @@ public class RepeatBackground : MonoBehaviour
         // If background moves left by its repeat width, move it back to start position
         if (transform.position.x < startPos.x - repeatWidth) { transform.position = startPos;}
     }
+
+ 
 }
+
+
