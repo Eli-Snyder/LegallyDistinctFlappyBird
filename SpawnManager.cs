@@ -7,7 +7,9 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject toob;
     [SerializeField] private float baseSpawnRate;
     [SerializeField] private GameManager gameManager;
-    [SerializeField] private float spawnRate;
+
+    private Coroutine spawnRoutine;
+    private float spawnRate;
 
     
 
@@ -17,6 +19,11 @@ public class SpawnManager : MonoBehaviour
         StartCoroutine(SpawnTarget()); // TODO: Will add activation trigger later
     }
 
+    public void StartSpawner() // Called by GameManager to start the spawner.
+    {
+        if (SpawnTarget == null)
+        { spawnRoutine = StartCoroutine(SpawnTarget()); }
+    }
 
     IEnumerator SpawnTarget()
     {
