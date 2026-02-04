@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 // TODO: Rewrite spawn manager to just generally suck less.
 
@@ -8,22 +8,23 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float baseSpawnRate;
     [SerializeField] private GameManager gameManager;
 
-    private Coroutine spawnRoutine;
     private float spawnRate;
+    private Coroutine spawnRoutine;
 
-    
 
     void Start()
     {
         spawnRate = baseSpawnRate;
-        StartCoroutine(SpawnTarget()); // TODO: Will add activation trigger later
+        //StartCoroutine(SpawnTarget()); // TODO: Will add activation trigger later
     }
+
 
     public void StartSpawner() // Called by GameManager to start the spawner.
     {
-        if (SpawnTarget == null)
+        if (spawnRoutine == null)
         { spawnRoutine = StartCoroutine(SpawnTarget()); }
     }
+
 
     IEnumerator SpawnTarget()
     {

@@ -11,11 +11,11 @@ public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
     // UI Silliness
-	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen;
+	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen, persistentUI;
     [SerializeField] private TextMeshProUGUI scoreText;
 
     // Le Things
-	public static GameManger Instance;
+	public static GameManager Instance;
     [SerializeField] private SpawnManager spawnManager;
 	
     // Le Values
@@ -30,10 +30,15 @@ public class GameManager : MonoBehaviour
 		{ Instance = this; }
 		else
 		{ Destroy(gameObject); }
+
+        if (titleScreen != null) { titleScreen.SetActive(true); }
+        if (scoreText != null) { persistentUI.SetActive(false); }
+
+        StartGame();
 	}
     
 	// This makes the game actually like happen
-    public void StartGame(float difficulty)
+    public void StartGame()
     {
         // Thy Game Commenceth
         isGameActive = true;
@@ -41,11 +46,12 @@ public class GameManager : MonoBehaviour
         score = 0;
 
 		
-		UpdateScore(0);
+		StartCoroutine(ScoreCounter());
 
-        //if (titleScreen != null) { titleScreen.SetActive(false); }
-        //if (pauseScreen != null) { pauseScreen.SetActive(false); }
-		// spawnManager.SpawnTarget();
+        if (titleScreen != null) { titleScreen.SetActive(false); }
+        if (pauseScreen != null) { pauseScreen.SetActive(false); }
+        if (scoreText != null) { persistentUI.SetActive(true); }
+		spawnManager.StartSpawner();
     }
 	
     void Update() 
@@ -67,23 +73,28 @@ public class GameManager : MonoBehaviour
 	    isGamePaused = !isGamePaused;
 	    Time.timeScale = isGamePaused ? 0f : 1f;
 		
-        // if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
+        if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
     }
- 
 
-   // FIXME: This isn't how we want score counted. Probably needs to be entirely rewritten.
-    public void UpdateScore(int scoreToAdd)
+
+    // FIXME: This isn't how we want score counted. Probably needs to be entirely rewritten.
+    IEnumerator ScoreCounter()
     {
-		// Code Commented out for now
-		//
-        //score += scoreToAdd;
-        //scoreText.text = "SCORE: " + score;
-    } 
+        while (isGameActive)
+        {
+            yield return new WaitForSeconds(1);
+            if (isGameActive) 
+            {
+                scoreText.text = "SCORE: " + score;
+                score++;
+            }    
+        }
+    }
 
     // Leave it
     public void GameOver()
     {
-        //if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
+        if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
         
         isGameActive = false;
         isGamePaused = false;
