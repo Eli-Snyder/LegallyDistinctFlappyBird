@@ -9,7 +9,9 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Physics.gravity *= gravityModifier;
+        Physics.gravity = new Vector3(0, -9.81f, 0); // For God said to his holiest of programmers:
+        Physics.gravity *= gravityModifier; // "Behold, my child, thy jankiest of hacks."
+
         playerRb = GetComponent<Rigidbody>();
         // Apply a small upward force at the start of the game
         playerRb.AddForce(Vector3.up * 5, ForceMode.Impulse);
@@ -22,20 +24,14 @@ public class PlayerController : MonoBehaviour
     {
         // While space is pressed and player is low enough, float up
         if (Input.GetKeyDown(KeyCode.Space) && gameManager.isGameActive)
-        {
-            playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse);
-            Debug.Log("Boing");
-        }
+        { playerRb.AddForce(Vector3.up * floatForce, ForceMode.Impulse); }
     }
 
     private void OnCollisionEnter(Collision other)
     {
         // if player collides with the opps, set gameOver to true
         if (other.gameObject.CompareTag("Obstacle"))
-        {
-            gameManager.GameOver();
-            Debug.Log("Rip broski");
-        } 
+        { gameManager.GameOver(); } 
     }
 
 }
