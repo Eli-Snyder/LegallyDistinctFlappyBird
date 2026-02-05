@@ -12,7 +12,9 @@ public class GameManager : MonoBehaviour
     // Commence the Establishing of Tihingings's
     // UI Silliness
 	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen, persistentUI;
+    [SerializeField] private GameObject restartButton, exitButton;
     [SerializeField] private TextMeshProUGUI scoreText;
+    
 
     // Le Things
 	public static GameManager Instance;
@@ -26,15 +28,17 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		// Creates an instance of GameManager if one does not already exist.
-		if (Instance == null)
-		{ Instance = this; }
-		else
-		{ Destroy(gameObject); }
+		if (Instance == null) { Instance = this; }
+		else { Destroy(gameObject); }
 
         if (titleScreen != null) { titleScreen.SetActive(true); }
-        if (scoreText != null) { persistentUI.SetActive(false); }
+        if (pauseScreen != null) { pauseScreen.SetActive(false); }
+        if (persistentUI != null) {  persistentUI.SetActive(false);}
 
-        StartGame(); // This will be replaced with a START button later. 
+        if (restartButton != null) { restartButton.SetActive(false); }
+        if (exitButton != null) { exitButton.SetActive(false); }
+
+        StartGame();
 	}
     
 	// This makes the game actually like happen
@@ -45,26 +49,28 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
         score = 0;
 
+		
 		StartCoroutine(ScoreCounter());
-		spawnManager.StartSpawner();
 
         if (titleScreen != null) { titleScreen.SetActive(false); }
         if (pauseScreen != null) { pauseScreen.SetActive(false); }
         if (scoreText != null) { persistentUI.SetActive(true); }
+
+        if (restartButton != null) { restartButton.SetActive(false); }
+        if (exitButton != null) { exitButton.SetActive(true); }
+
+        spawnManager.StartSpawner();
     }
 	
     void Update() 
     {
         if (Input.GetKeyDown(KeyCode.Escape) && isGameActive) 
-		{ PauseHandler(); }
+		{ PauseHandler(); } // "World is a fuck" - Cohyn
     }
 
     // Do not touch yet
     public void RestartGame()
-    {
-        // TODO: Button doesn't exist yet.
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
+    { SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
 	
     // Leave it for now
     public void PauseHandler()
@@ -75,12 +81,13 @@ public class GameManager : MonoBehaviour
         if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
     }
 
+
+    // I'm sure this is fine and will in no way bite me in the ass whatsoever.
     IEnumerator ScoreCounter()
     {
         while (isGameActive)
         {
             yield return new WaitForSeconds(1);
-			
             if (isGameActive) 
             {
                 scoreText.text = "SCORE: " + score;
@@ -89,7 +96,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
+    // Leave it
     public void GameOver()
     {
         if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
@@ -102,7 +109,6 @@ public class GameManager : MonoBehaviour
     public void CloseGame()
 	{ Application.Quit(); }
 }
-
 
 
 
