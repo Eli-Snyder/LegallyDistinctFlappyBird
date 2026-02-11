@@ -1,45 +1,46 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using System.Collections.Generic;
-using System.Collections;
 using TMPro;
-
-// TODO: Make a UI so things actually happen.
 
 public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
-    // UI Silliness
-	[SerializeField] private GameObject titleScreen, pauseScreen, gameOverScreen, persistentUI;
-    [SerializeField] private GameObject restartButton, exitButton;
+    [Header ("UI Silliness")]
     [SerializeField] private TextMeshProUGUI scoreText;
-    
+    [SerializeField] private GameObject titleScreen, persistentUI, pauseScreen;
+    [SerializeField] private GameObject gameOverScreen1, gameOverScreen2;
+    [SerializeField] private GameObject restartButton, exitButton;
 
-    // Le Things
-	public static GameManager Instance;
+
+    [Header ("Le Things")]
     [SerializeField] private SpawnManager spawnManager;
-	
-    // Le Values
-	public bool isGameActive, isGamePaused;
-	private int score;
+    [SerializeField] private AudioClip gameOverSound;
+    [SerializeField] private AudioSource playerAudio;
+    public static GameManager Instance;
+
+    [Header ("Le Values")]
+    [SerializeField] private int score;
+    public bool isGameActive, isGamePaused;
 
 
 	private void Awake()
 	{
-		// Creates an instance of GameManager if one does not already exist.
-		if (Instance == null) { Instance = this; }
+		isGameActive = false;
+        Time.timeScale = 1f;
+
+        // Creates an instance of GameManager if one does not already exist.
+        if (Instance == null) { Instance = this; }
 		else { Destroy(gameObject); }
 
-        if (titleScreen != null) { titleScreen.SetActive(true); }
+        if (titleScreen != null) { titleScreen.SetActive(true); } 
         if (pauseScreen != null) { pauseScreen.SetActive(false); }
-        if (persistentUI != null) {  persistentUI.SetActive(false);}
-
+        if (persistentUI != null) { persistentUI.SetActive(false);}
         if (restartButton != null) { restartButton.SetActive(false); }
-        if (exitButton != null) { exitButton.SetActive(false); }
+        if (exitButton != null) { exitButton.SetActive(true); }
 
-        StartGame();
-	}
+        if (gameOverScreen1 != null) { gameOverScreen1.SetActive(false); }
+        if (gameOverScreen2 != null) { gameOverScreen2.SetActive(false); }
+    }
     
 	// This makes the game actually like happen
     public void StartGame()
@@ -49,15 +50,15 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
         score = 0;
 
-		
-		StartCoroutine(ScoreCounter());
+        if (titleScreen != null) { titleScreen.SetActive(false); } // Born To Die
+        if (pauseScreen != null) { pauseScreen.SetActive(false); } // World is a fuck
+        if (persistentUI != null) { persistentUI.SetActive(true); } // Kill em all 1989
+        if (restartButton != null) { restartButton.SetActive(false); } // I am trash man
+        if (exitButton != null) { exitButton.SetActive(false); } // 410,757,864,530 EMPTY TRASH CANS
 
-        if (titleScreen != null) { titleScreen.SetActive(false); }
-        if (pauseScreen != null) { pauseScreen.SetActive(false); }
-        if (scoreText != null) { persistentUI.SetActive(true); }
+        if (gameOverScreen1 != null) { gameOverScreen1.SetActive(false); }
+        if (gameOverScreen2 != null) { gameOverScreen2.SetActive(false); }
 
-        if (restartButton != null) { restartButton.SetActive(false); }
-        if (exitButton != null) { exitButton.SetActive(true); }
 
         spawnManager.StartSpawner();
     }
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
     void Update() 
     {
         if (Input.GetKeyDown(KeyCode.Escape) && isGameActive) 
-		{ PauseHandler(); } // "World is a fuck" - Cohyn
+		{ PauseHandler(); } // Handles your pauses :3
     }
 
     // Do not touch yet
@@ -77,38 +78,45 @@ public class GameManager : MonoBehaviour
     {
 	    isGamePaused = !isGamePaused;
 	    Time.timeScale = isGamePaused ? 0f : 1f;
-		
-        if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); }
+
+        if (pauseScreen != null) { pauseScreen.SetActive(isGamePaused); } // How the 9mm round in the chamber of my Sig P320
+        if (restartButton != null) { restartButton.SetActive(isGamePaused); } // looks at my dick and balls when I holster it
+        if (exitButton != null) { exitButton.SetActive(isGamePaused); } // at the 1 o'clock position
+        if (persistentUI != null) { persistentUI.SetActive(!isGamePaused); } // :3
     }
 
-
-    // I'm sure this is fine and will in no way bite me in the ass whatsoever.
-    IEnumerator ScoreCounter()
+    public void UpdateScore()
     {
-        while (isGameActive)
+        if (isGameActive)
         {
-            yield return new WaitForSeconds(1);
-            if (isGameActive) 
-            {
-                scoreText.text = "SCORE: " + score;
-                score++;
-            }    
+            score++;
+            scoreText.text = "SCORE: " + score;
         }
     }
+    
 
-    // Leave it
     public void GameOver()
     {
-        if (gameOverScreen != null) { gameOverScreen.gameObject.SetActive(true); }
+        if (gameOverScreen2 != null && score>10) 
+        { 
+            gameOverScreen2.gameObject.SetActive(true); 
+            gameOverScreen1.gameObject.SetActive(false);
+        }
+        else
+        {
+            gameOverScreen1.gameObject.SetActive(true);
+            gameOverScreen2.gameObject.SetActive(false);
+        }
+        if (restartButton != null) { restartButton.SetActive(true); }
+        if (exitButton != null) { exitButton.SetActive(true); }
         
         isGameActive = false;
         isGamePaused = false;
         Time.timeScale = 1f;
+
+        playerAudio.PlayOneShot(gameOverSound);
 	}
 	
     public void CloseGame()
 	{ Application.Quit(); }
 }
-
-
-
