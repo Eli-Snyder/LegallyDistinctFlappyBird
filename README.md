@@ -152,11 +152,11 @@ Self-Imposed
 
 - [x] Music ([https://www.youtube.com/watch?v=pbuJUaO-wpY](<https://www.youtube.com/watch?v=pbuJUaO-wpY>) at around 6:00 for exposing mixer param)
 
-- [ ] Program Compiled
+- [x] Program Compiled
 
 - [x] Documentation
 
-- [ ] Documentation export as pdf (make sure all sections are unfolded)
+- [x] Documentation export as markdown (make sure all sections are unfolded)
 
 ### Reusable Code:
 
