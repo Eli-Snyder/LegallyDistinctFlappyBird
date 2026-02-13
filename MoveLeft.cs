@@ -5,7 +5,7 @@ public class MoveLeft : MonoBehaviour
     [SerializeField] private float speed;
     private float leftBound = -10f;
 
-    void Update()
+    void FixedUpdate()
     {
         // If game is not over, move to the left
         if (GameManager.Instance != null && GameManager.Instance.isGameActive) // Damn this file is insufficiently shitposted
