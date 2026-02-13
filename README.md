@@ -141,7 +141,9 @@ Self-Imposed
 
   MoveLeft.cs and RepeatBackground.cs are both scripts that handle the "scrolling" of the background. RepeatBackground.cs has only 2 methods, `Awake()` and `Update()`. `Awake()` sets the starting position of the background and fetches the Box Collider size along the X axis, which is then divided by 2. This creates a fairly seamless "scrolling" effect. `Update()` simply checked the position of the background every frame. If the background moves past the set X position, it returns the background to the start position.
 
-  Additionally, MoveLeft.cs also applies that same right-to-left movement to the game obstacles. The only method in this scripts is the `Update()` method, which checks for game status (via the isGameActive boolean from GameManager.cs), object tag, and destroys game objects that pass a set X coordinate unless tagged with the "Background" tag. The speed can be set in the Unity Editor, and thus allows the obstacles to move at a different speed than the background.
+  Additionally, MoveLeft.cs also applies that same right-to-left movement to the game obstacles. The only method in this scripts is the `FixedUpdate()` method, which checks for game status (via the isGameActive boolean from GameManager.cs), object tag, and destroys game objects that pass a set X coordinate unless tagged with the "Background" tag. The speed can be set in the Unity Editor, and thus allows the obstacles to move at a different speed than the background.
+
+  Initially, the `FixedUpdate()` method was the `Update()` method. This worked fine in the editor itself, but did not work correctly once compiled. This change fixed that issue.
 
 
 ### GameManager.cs:
