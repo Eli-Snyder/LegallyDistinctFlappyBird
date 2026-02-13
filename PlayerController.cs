@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.AdaptivePerformance.VisualScripting;
 
 public class PlayerController : MonoBehaviour
 {
-    [Header ("RANDOM THINGS")]
-    [SerializeField] private float gravityModifier = 1.5f, floatForce = 5;
+    [Header ("RANDOM THINGS")] // TODO: Buy more Fireball Whiskey
     [SerializeField] private GameManager gameManager;
-    [SerializeField] private AudioClip flapSound, memeSound;
-    [SerializeField] private AudioSource birdSounds, memeryAudio;
-    
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private AudioClip flapSound;
+    [SerializeField] private AudioSource birdSounds;
+    [SerializeField] private float gravityModifier = 1.5f, floatForce = 5;
+
     private Rigidbody playerRb;
     private float yPosition;
 
@@ -36,37 +36,24 @@ public class PlayerController : MonoBehaviour
         yPosition = playerRb.transform.position.y;
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
-        // if player collides with the opps, set gameOver to true
-        if (other.gameObject.CompareTag("Obstacle"))
-        { gameManager.GameOver(); }
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("Score"))
-        { gameManager.UpdateScore(); } // I don't answer to corpbro soyjak chuds :3
-    }
+    private void OnCollisionEnter(Collision other) { if (other.gameObject.CompareTag("Obstacle")) { gameManager.GameOver(); } }
 
-    private void OnMouseDown()
-    {
-        if (gameObject.CompareTag("Player"))
-        {
-            memeryAudio.PlayOneShot(memeSound);
-        }
-    }
+    private void OnTriggerEnter(Collider other) { if (other.gameObject.CompareTag("Score")) { gameManager.UpdateScore(); } }
 
     IEnumerator IdleController()
     {
         while (!gameManager.isGameActive)
         {
             if (yPosition < -1)
-            {   // Coin Dude used my code.
-                // I AM THE ORIGINAL!
-                playerRb.AddForce(Vector3.up * floatForce*1.5f, ForceMode.Impulse);
-                yield return new WaitForSeconds(0.25f);
+            {   
+                playerRb.AddForce(Vector3.up * floatForce*1.5f, ForceMode.Impulse); // Coin Dude used my code.
+                yield return new WaitForSeconds(0.25f); // I AM THE ORIGINAL!
             }
             yield return new WaitForSeconds(0.1f); 
         }
     }
+    
+    private void OnMouseDown() { if (gameObject.CompareTag("Player")) { audioManager.MemeMusic(); } }
+
+    // I refactored all of your code out of spite :3
 }

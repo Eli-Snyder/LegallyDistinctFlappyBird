@@ -1,5 +1,3 @@
-using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class MoveLeft : MonoBehaviour
@@ -10,11 +8,11 @@ public class MoveLeft : MonoBehaviour
     void Update()
     {
         // If game is not over, move to the left
-        if (GameManager.Instance != null && GameManager.Instance.isGameActive)
-        { transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World); }
+        if (GameManager.Instance != null && GameManager.Instance.isGameActive) // Damn this file is insufficiently shitposted
+        { transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World); } // That makes me sad
 
-        else if (GameManager.Instance != null && gameObject.CompareTag("Background"))
-        { transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World); }
+        else if (GameManager.Instance != null && gameObject.CompareTag("Background")) // If a script is to be bloated
+        { transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World); } // It better be due to my completely wanted and loved opinions!
 
         // If object goes off screen that is NOT the background, destroy it
         if (transform.position.x < leftBound && !gameObject.CompareTag("Background"))

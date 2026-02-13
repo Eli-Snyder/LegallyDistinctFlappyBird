@@ -13,8 +13,7 @@ public class SpawnManager : MonoBehaviour
     private Coroutine spawnRoutine;
 
 
-    void Start()
-    { difficulty = 0f; }
+    void Start() { difficulty = 0f; }
 
     void Update()
     {

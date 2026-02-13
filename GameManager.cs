@@ -5,44 +5,43 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     // Commence the Establishing of Tihingings's
-    [Header ("UI Silliness")]
+    [Header("UI Silliness")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private GameObject titleScreen, persistentUI, pauseScreen;
     [SerializeField] private GameObject gameOverScreen1, gameOverScreen2;
     [SerializeField] private GameObject restartButton, exitButton;
 
-
-    [Header ("Le Things")]
-    [SerializeField] private SpawnManager spawnManager;
-    [SerializeField] private AudioClip gameOverSound;
+    [Header("Le Objects")]
+    [SerializeField] private SpawnManager spawnManager; 
+    [SerializeField] private AudioClip gameOverSound;   
     [SerializeField] private AudioSource playerAudio;
     public static GameManager Instance;
 
-    [Header ("Le Values")]
-    [SerializeField] private int score;
-    public bool isGameActive, isGamePaused;
+    [Header("Le Values")]
+    [SerializeField] private int score; // God give me amphetamines to change the things I can change
+    public bool isGameActive, isGamePaused; // And Fireball Whiskey to pretend that the things I can't change just aren't real
 
 
-	private void Awake()
-	{
-		isGameActive = false;
+    private void Awake()
+    {
+        isGameActive = false;
         Time.timeScale = 1f;
 
         // Creates an instance of GameManager if one does not already exist.
         if (Instance == null) { Instance = this; }
-		else { Destroy(gameObject); }
+        else { Destroy(gameObject); }
 
-        if (titleScreen != null) { titleScreen.SetActive(true); } 
+        if (titleScreen != null) { titleScreen.SetActive(true); }
         if (pauseScreen != null) { pauseScreen.SetActive(false); }
-        if (persistentUI != null) { persistentUI.SetActive(false);}
+        if (persistentUI != null) { persistentUI.SetActive(false); }
         if (restartButton != null) { restartButton.SetActive(false); }
         if (exitButton != null) { exitButton.SetActive(true); }
 
         if (gameOverScreen1 != null) { gameOverScreen1.SetActive(false); }
         if (gameOverScreen2 != null) { gameOverScreen2.SetActive(false); }
     }
-    
-	// This makes the game actually like happen
+
+    // This makes the game actually like happen
     public void StartGame()
     {
         // Thy Game Commenceth
@@ -62,18 +61,11 @@ public class GameManager : MonoBehaviour
 
         spawnManager.StartSpawner();
     }
-	
-    void Update() 
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && isGameActive) 
-		{ PauseHandler(); } // Handles your pauses :3
-    }
 
-    // Do not touch yet
-    public void RestartGame()
-    { SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
+    void Update() { if (Input.GetKeyDown(KeyCode.Escape) && isGameActive) { PauseHandler(); } } // I call this code refactor "spite"
+
+    public void RestartGame() { SceneManager.LoadScene(SceneManager.GetActiveScene().name); } // This is also spite.
 	
-    // Leave it for now
     public void PauseHandler()
     {
 	    isGamePaused = !isGamePaused;
@@ -94,29 +86,27 @@ public class GameManager : MonoBehaviour
         }
     }
     
-
     public void GameOver()
     {
         if (gameOverScreen2 != null && score>10) 
         { 
-            gameOverScreen2.gameObject.SetActive(true); 
+            gameOverScreen2.gameObject.SetActive(true); // Wow you're really good at this!
             gameOverScreen1.gameObject.SetActive(false);
         }
         else
         {
-            gameOverScreen1.gameObject.SetActive(true);
+            gameOverScreen1.gameObject.SetActive(true); // Holy shit you genuinely suck at this game lmao
             gameOverScreen2.gameObject.SetActive(false);
         }
         if (restartButton != null) { restartButton.SetActive(true); }
         if (exitButton != null) { exitButton.SetActive(true); }
         
-        isGameActive = false;
+        isGameActive = false; 
         isGamePaused = false;
         Time.timeScale = 1f;
 
-        playerAudio.PlayOneShot(gameOverSound);
+        playerAudio.PlayOneShot(gameOverSound); // I hope you like the sound of metalpipe.wav
 	}
 	
-    public void CloseGame()
-	{ Application.Quit(); }
+    public void CloseGame() { Application.Quit(); } // ALL MY HOMIES HATE WHITESPACE RAAAAAAAAH
 }
